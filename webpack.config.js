@@ -1,4 +1,6 @@
+const CopyPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
 const path = require("path");
 const webpack = require("webpack");
 
@@ -19,19 +21,40 @@ module.exports = {
         path: path.resolve(__dirname, "dist"),
         filename: "bundle.js"
     },
+    optimization: {
+        minimize: true,
+        minimizer: [
+            new TerserPlugin({
+                test: /\.js(\?.*)?$/i,
+                exclude: /node_modules/,
+                terserOptions: {
+                    compress: {
+                        drop_console: true,
+                    },
+                    mangle: true,
+                    output: {
+                        ascii_only: true,
+                        comments: false,
+                    },
+
+                },
+            }),
+        ],
+    },
     module: {
         rules: [
             {
                 test: /\.css$/i,
+                include: path.resolve(__dirname, 'src'),
                 use: ['style-loader', 'css-loader', 'postcss-loader'],
             },
-            { test: /src[/\\]assets/, loader: 'arraybuffer-loader'},
-            { test: /\.afm$/, loader: 'raw-loader'},
+            { test: /src[/\\]assets/, loader: 'arraybuffer-loader' },
+            { test: /\.afm$/, loader: 'raw-loader' },
         ]
     },
     devServer: {
         static: path.join(__dirname, "dist"),
-        compress: true,
+        compress: false,
         port: 9000,
         hot: true
     },
@@ -39,14 +62,17 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: "./src/index.html"
         }),
-        new webpack.HotModuleReplacementPlugin(
-            {
-                multiStep: true
-            }
-        ),
+        new webpack.HotModuleReplacementPlugin({
+            multiStep: true
+        }),
         new webpack.ProvidePlugin({
             process: 'process/browser',
             Buffer: ['buffer', 'Buffer'],
+        }),
+        new CopyPlugin({
+            patterns: [
+                { from: "node_modules/easymde/dist/easymde.min.css", to: "easymde.min.css" },
+            ],
         }),
     ]
 };

@@ -2,11 +2,13 @@
 <html>
 
 <head>
+    <link rel="stylesheet" href="easymde.min.css"/>
 </head>
 
-<body class="bg-gray-100">
+<body class="bg-gray-100 flex">
     <div class="flex justify-center items-start pt-16">
         <div class="flex flex-col w-3/5 mr-6">
+            <textarea id="markdown-input" class="h-80 resize-none p-2 bg-white rounded w-full"></textarea>
             <div class="flex items-center mb-4">
                 <label for="style-select" class="mr-2">Select style:</label>
                 <select name="style-select" id="style-select" class="px-2 py-1 bg-white rounded">
@@ -15,7 +17,6 @@
                     <option value="minimal">Minimal</option>
                 </select>
             </div>
-            <textarea id="markdown-input" class="h-80 resize-none p-2 bg-white rounded w-full"></textarea>
         </div>
         <div class="flex-1">
             <iframe id="pdf-preview" class="w-full h-96 border-2 border-gray-500 rounded"></iframe>
