@@ -2,24 +2,28 @@
 <html>
 
 <head>
-    <link rel="stylesheet" href="easymde.min.css"/>
+    <link rel="stylesheet" href="easymde.min.css" />
 </head>
 
-<body class="bg-gray-100 flex">
-    <div class="flex justify-center items-start pt-16">
+<body class="bg-gray-100">
+    <div id="panel"
+        class="fixed top-0 bottom-0 left-0 w-3/5 bg-neutral-800 bg-opacity-80 border-r border-gray-200 shadow-r-lg transition-all duration-300 transform translate-x-0 z-10">
+        <div id="panel-content" class="p-6">
+            <h2 class="text-lg font-semibold mb-4">Panel Content</h2>
+            <p>This is the content of the panel.</p>
+        </div>
+        <div id="btn-toggle-panel" class="absolute right-0 top-1/4 -mr-8 w-8 h-24 bg-gray-200 bg-opacity-50 rounded-r-lg shadow-lg transform transition duration-300 ease-in-out cursor-pointer">
+            <!-- svg arrow to the left -->
+            <svg viewBox="0 0 32 32" class="icon icon-caret-left" viewBox="0 0 32 32" aria-hidden="true"><path d="M20.697 24L9.303 16.003 20.697 8z"/></svg>
+            <svg viewBox="0 0 32 32" class="icon icon-caret-right hidden" viewBox="0 0 32 32" aria-hidden="true"><path d="M11.303 8l11.394 7.997L11.303 24z"/></svg>
+        </div>
+    </div>
+    <div class="flex justify-center items-start">
         <div class="flex flex-col w-3/5 mr-6">
-            <textarea id="markdown-input" class="h-80 resize-none p-2 bg-white rounded w-full"></textarea>
-            <div class="flex items-center mb-4">
-                <label for="style-select" class="mr-2">Select style:</label>
-                <select name="style-select" id="style-select" class="px-2 py-1 bg-white rounded">
-                    <option value="default">Default</option>
-                    <option value="fancy">Fancy</option>
-                    <option value="minimal">Minimal</option>
-                </select>
-            </div>
+            <textarea id="markdown-input" class="resize-none p-2 bg-white rounded w-full"></textarea>
         </div>
         <div class="flex-1">
-            <iframe id="pdf-preview" class="w-full h-96 border-2 border-gray-500 rounded"></iframe>
+            <iframe id="pdf-preview" class="w-full h-screen border-2 border-gray-500 rounded"></iframe>
         </div>
     </div>
 </body>
