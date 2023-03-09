@@ -40,6 +40,7 @@
     "process": "^0.11.10",
     "raw-loader": "^4.0.2",
     "stream-browserify": "^3.0.0",
-    "util": "^0.12.5"
+    "util": "^0.12.5",
+    "vanilla-picker": "^2.12.1"
   }
 }

@@ -7,17 +7,188 @@
 
 <body class="bg-gray-100">
     <div id="panel"
-        class="fixed top-0 bottom-0 left-0 w-3/5 bg-neutral-800 bg-opacity-80 border-r border-gray-200 shadow-r-lg transition-all duration-300 transform translate-x-0 z-10">
-        <div id="panel-content" class="p-6">
-            <h2 class="text-lg font-semibold mb-4">Panel Content</h2>
-            <p>This is the content of the panel.</p>
+        class="absolute top-0 bottom-0 left-0 w-3/5 bg-neutral-800 bg-opacity-80 border-r border-gray-200 shadow-r-lg transition-all duration-300 transform translate-x-0 z-10 overflow-visiable">
+        <div id="panel-content" class="p-6 absolute top-0 bottom-0 w-full overflow-y-scroll">
+            <div class="grid grid-cols-1 gap-4">
+                <div>
+                    <span class="text-gray-100">Font</span>
+                    <select id="select-font"
+                        class="block w-full mt-1 text-sm text-gray-300 border-gray-600 bg-gray-700 form-select focus:shadow-outline-gray">
+                    </select>
+                </div>
+                <!-- character spacing -->
+                <div>
+                    <span class="text-gray-100">Character Spacing: </span><span id="character-spacing-value"
+                        class="text-gray-100"></span>
+                    <input id="input-character-spacing" type="range"
+                        class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+                </div>
+                <!-- word spacing -->
+                <div>
+                    <span class="text-gray-100">Word Spacing: </span><span id="word-spacing-value"
+                        class="text-gray-100"></span>
+                    <input id="input-word-spacing" type="range"
+                        class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+                </div>
+                <!-- baseline -->
+                <div>
+                    <span class="text-gray-100">Baseline: </span>
+                    <select id="select-baseline"
+                        class="block w-full mt-1 text-sm text-gray-300 border-gray-600 bg-gray-700 form-select focus:shadow-outline-gray">
+                        <option value="top">Top</option>
+                        <option value="middle">Middle</option>
+                        <option value="bottom">Bottom</option>
+                        <option value="alphabetic">Alphabetic</option>
+                        <option value="hanging">Hanging</option>
+                        <option value="ideographic">Ideographic</option>
+                    </select>
+                </div>
+                <!-- font size -->
+                <div class="grid grid-rows-3 grid-cols-3 grid-flow-row gap-4">
+                    <div class="border-dashed rounded-t border-2 border-gray-100 p-2">
+                        <span class="text-gray-100">Font Size h1: </span><span id="font-size-h1-value"
+                            class="text-gray-100"></span>
+                        <input id="input-font-size-h1" type="range"
+                            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+                        <span class="text-gray-100">Line Gap h1: </span><span id="line-gap-h1-value"
+                            class="text-gray-100"></span>
+                        <input id="input-line-gap-h1" type="range"
+                            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" max="70" min="-30" />
+                        <span class="text-gray-100">Paragraph Gap h1: </span><span id="p-gap-h1-value"
+                            class="text-gray-100"></span>
+                        <input id="input-p-gap-h1" type="range" max="70" min="-30"
+                            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+                    </div>
+                    <div class="border-dashed rounded-t border-2 border-gray-100 p-2">
+                        <span class="text-gray-100">Font Size h2: </span><span id="font-size-h2-value"
+                            class="text-gray-100"></span>
+                        <input id="input-font-size-h2" type="range"
+                            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+                        <span class="text-gray-100">Line Gap h2: </span><span id="line-gap-h2-value"
+                            class="text-gray-100"></span>
+                        <input id="input-line-gap-h2" type="range" max="70" min="-30"
+                            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+                        <span class="text-gray-100">Paragraph Gap h2: </span><span id="p-gap-h2-value"
+                            class="text-gray-100"></span>
+                        <input id="input-p-gap-h2" type="range" max="70" min="-30"
+                            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+                    </div>
+                    <div class="border-dashed rounded-t border-2 border-gray-100 p-2">
+                        <span class="text-gray-100">Font Size h3: </span><span id="font-size-h3-value"
+                            class="text-gray-100"></span>
+                        <input id="input-font-size-h3" type="range"
+                            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+                        <span class="text-gray-100">Line Gap h3: </span><span id="line-gap-h3-value"
+                            class="text-gray-100"></span>
+                        <input id="input-line-gap-h3" type="range" max="70" min="-30"
+                            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+                        <span class="text-gray-100">Paragraph Gap h3: </span><span id="p-gap-h3-value"
+                            class="text-gray-100"></span>
+                        <input id="input-p-gap-h3" type="range" max="70" min="-30"
+                            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+                    </div>
+                    <div class="border-dashed rounded-t border-2 border-gray-100 p-2">
+                        <span class="text-gray-100">Font Size h4: </span><span id="font-size-h4-value"
+                            class="text-gray-100"></span>
+                        <input id="input-font-size-h4" type="range"
+                            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+                        <span class="text-gray-100">Line Gap h4: </span><span id="line-gap-h4-value"
+                            class="text-gray-100"></span>
+                        <input id="input-line-gap-h4" type="range" max="70" min="-30"
+                            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+                        <span class="text-gray-100">Paragraph Gap h4: </span><span id="p-gap-h4-value"
+                            class="text-gray-100"></span>
+                        <input id="input-p-gap-h4" type="range" max="70" min="-30"
+                            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+                    </div>
+                    <div class="border-dashed rounded-t border-2 border-gray-100 p-2">
+                        <span class="text-gray-100">Font Size h5: </span><span id="font-size-h5-value"
+                            class="text-gray-100"></span>
+                        <input id="input-font-size-h5" type="range"
+                            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+                        <span class="text-gray-100">Line Gap h5: </span><span id="line-gap-h5-value"
+                            class="text-gray-100"></span>
+                        <input id="input-line-gap-h5" type="range" max="70" min="-30"
+                            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+                        <span class="text-gray-100">Paragraph Gap h5: </span><span id="p-gap-h5-value"
+                            class="text-gray-100"></span>
+                        <input id="input-p-gap-h5" type="range" max="70" min="-30"
+                            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+                    </div>
+                    <div class="border-dashed rounded-t border-2 border-gray-100 p-2">
+                        <span class="text-gray-100">Font Size h6: </span><span id="font-size-h6-value"
+                            class="text-gray-100"></span>
+                        <input id="input-font-size-h6" type="range"
+                            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+                        <span class="text-gray-100">Line Gap h6: </span><span id="line-gap-h6-value"
+                            class="text-gray-100"></span>
+                        <input id="input-line-gap-h6" type="range" max="70" min="-30"
+                            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+                        <span class="text-gray-100">Paragraph Gap h6: </span><span id="p-gap-h6-value"
+                            class="text-gray-100"></span>
+                        <input id="input-p-gap-h6" type="range" max="70" min="-30"
+                            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+                    </div>
+                    <div class="border-dashed rounded-t border-2 border-gray-100 p-2">
+                        <span class="text-gray-100">Font Size p: </span><span id="font-size-p-value"
+                            class="text-gray-100"></span>
+                        <input id="input-font-size-p" type="range"
+                            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+                        <span class="text-gray-100">Line Gap p: </span><span id="line-gap-p-value"
+                            class="text-gray-100"></span>
+                        <input id="input-line-gap-p" type="range" max="70" min="-30"
+                            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+                        <span class="text-gray-100">Paragraph Gap p: </span><span id="p-gap-p-value"
+                            class="text-gray-100"></span>
+                        <input id="input-p-gap-p" type="range" max="70" min="-30"
+                            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+                    </div>
+                    <div class="border-dashed rounded-t border-2 border-gray-100 p-2">
+                        <span class="text-gray-100">Font Size List: </span><span id="font-size-list-value"
+                            class="text-gray-100"></span>
+                        <input id="input-font-size-list" type="range"
+                            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+                        <span class="text-gray-100">Line Gap List: </span><span id="line-gap-list-value"
+                            class="text-gray-100"></span>
+                        <input id="input-line-gap-list" type="range" max="70" min="-30"
+                            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+                        <span class="text-gray-100">Paragraph Gap List: </span><span id="p-gap-list-value"
+                            class="text-gray-100"></span>
+                        <input id="input-p-gap-list" type="range" max="70" min="-30"
+                            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+                    </div>
+                    <div class="border-dashed rounded-t border-2 border-gray-100 p-2">
+                        <span class="text-gray-100">Font Size Strong: </span><span id="font-size-strong-value"
+                            class="text-gray-100"></span>
+                        <input id="input-font-size-strong" type="range"
+                            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+                        <span class="text-gray-100">Line Gap Strong: </span><span id="line-gap-strong-value"
+                            class="text-gray-100"></span>
+                        <input id="input-line-gap-strong" type="range" max="70" min="-30"
+                            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+                        <span class="text-gray-100">Paragraph Gap Strong: </span><span id="p-gap-strong-value"
+                            class="text-gray-100"></span>
+                        <input id="input-p-gap-strong" type="range" max="70" min="-30"
+                            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+                    </div>
+
+                </div>
+
+            </div>
+
         </div>
-        <div id="btn-toggle-panel" class="absolute right-0 top-1/4 -mr-8 w-8 h-24 bg-gray-200 bg-opacity-50 rounded-r-lg shadow-lg transform transition duration-300 ease-in-out cursor-pointer">
+        <div id="btn-toggle-panel"
+            class="absolute left-full top-1/4 -mr-8 w-8 h-24 bg-gray-200 bg-opacity-50 rounded-r-lg shadow-lg transform transition duration-300 ease-in-out cursor-pointer">
             <!-- svg arrow to the left -->
-            <svg viewBox="0 0 32 32" class="icon icon-caret-left" viewBox="0 0 32 32" aria-hidden="true"><path d="M20.697 24L9.303 16.003 20.697 8z"/></svg>
-            <svg viewBox="0 0 32 32" class="icon icon-caret-right hidden" viewBox="0 0 32 32" aria-hidden="true"><path d="M11.303 8l11.394 7.997L11.303 24z"/></svg>
+            <svg viewBox="0 0 32 32" class="icon icon-caret-left" viewBox="0 0 32 32" aria-hidden="true">
+                <path d="M20.697 24L9.303 16.003 20.697 8z" />
+            </svg>
+            <svg viewBox="0 0 32 32" class="icon icon-caret-right hidden" viewBox="0 0 32 32" aria-hidden="true">
+                <path d="M11.303 8l11.394 7.997L11.303 24z" />
+            </svg>
         </div>
     </div>
+    
     <div class="flex justify-center items-start">
         <div class="flex flex-col w-3/5 mr-6">
             <textarea id="markdown-input" class="resize-none p-2 bg-white rounded w-full"></textarea>

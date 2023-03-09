@@ -3,6 +3,53 @@ import fs from 'fs'
 import Courier from '!!raw-loader!pdfkit/js/data/Courier.afm'
 // use raw-loader implicitly (webpack is configured to load *.afm files using raw loader)
 import CourierBold from 'pdfkit/js/data/Courier-Bold.afm'
+import CourierBoldeOblique from 'pdfkit/js/data/Courier-BoldOblique.afm'
+import CourierOblique from 'pdfkit/js/data/Courier-Oblique.afm'
+import Helvetica from 'pdfkit/js/data/Helvetica.afm'
+import HelveticaBold from 'pdfkit/js/data/Helvetica-Bold.afm'
+import HelveticaBoldOblique from 'pdfkit/js/data/Helvetica-BoldOblique.afm'
+import HelveticaOblique from 'pdfkit/js/data/Helvetica-Oblique.afm'
+import TimesRoman from '!!raw-loader!pdfkit/js/data/Times-Roman.afm'
+import TimesItalic from '!!raw-loader!pdfkit/js/data/Times-Italic.afm'
+import TimesBold from '!!raw-loader!pdfkit/js/data/Times-Bold.afm'
+import TimesBoldItalic from '!!raw-loader!pdfkit/js/data/Times-BoldItalic.afm'
+
+var fonts = {
+  "Courier": {
+    "kv-pair": {
+      "regular": "Courier",
+      "bold": "Courier-Bold",
+      "italic": "Courier-Oblique",
+    },
+    "data/Courier.afm": Courier,
+    "data/Courier-Bold.afm": CourierBold,
+    "data/Courier-BoldOblique.afm": CourierBoldeOblique,
+    "data/Courier-Oblique.afm": CourierOblique
+  },
+  "Helvetica": {
+    "kv-pair": {
+      "regular": "Helvetica",
+      "bold": "Helvetica-Bold",
+      "italic": "Helvetica-Oblique",
+    },
+    "data/Helvetica.afm": Helvetica,
+    "data/Helvetica-Bold.afm": HelveticaBold,
+    "data/Helvetica-BoldOblique.afm": HelveticaBoldOblique,
+    "data/Helvetica-Oblique.afm": HelveticaOblique
+  },
+  "Times-Roman": {
+    "kv-pair": {
+      "regular": "Times-Roman",
+      "bold": "Times-Bold",
+      "italic": "Times-Italic",
+    },
+    "data/Times-Roman.afm": TimesRoman,
+    "data/Times-Italic.afm": TimesItalic,
+    "data/Times-Bold.afm": TimesBold,
+    "data/Times-BoldItalic.afm": TimesBoldItalic
+  },
+}
+
 
 function registerBinaryFiles(ctx) {
   ctx.keys().forEach(key => {
@@ -28,6 +75,16 @@ registerBinaryFiles(require.context('./assets', true))
 // is good practice to register only required fonts to avoid the bundle size increase
 registerAFMFonts(require.context('pdfkit/js/data', false, /Helvetica.*\.afm$/))
 
-// register files imported directly
-fs.writeFileSync('data/Courier.afm', Courier)
-fs.writeFileSync('data/Courier-Bold.afm', CourierBold)
+// iterate over all fonts and register them
+Object.keys(fonts).forEach(fontName => {
+  Object.keys(fonts[fontName]).forEach(fontPath => {
+    if (fontPath === "kv-pair") {
+      return
+    }
+
+    fs.writeFileSync(fontPath, fonts[fontName][fontPath])
+  })
+})
+
+// export fonts
+export { fonts }
