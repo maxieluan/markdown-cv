@@ -6,6 +6,7 @@ import "./register-files"
 import EasyMDE from "easymde";
 import { marked } from "marked";
 import { fonts } from "./register-files";
+import Picker from "vanilla-picker/csp";
 
 const editor = document.getElementById('markdown-input');
 const easyMDE = new EasyMDE({
@@ -62,6 +63,14 @@ var config = {
   wordSpacing: 0,
   baseline: 'alphabetic',
   log: true,
+  backgroundoffsety: 0,
+  themeColor: '#FF0000',
+  spaceBeforeHr: 0,
+  spaceAfterHr: 0,
+  coloredHrLenght: 0,
+  coloredHrThickness: 0,
+  hrThickness: 0,
+  bulletStyle: '•',
 }
 
 function cacheConfigToBrowser() {
@@ -396,6 +405,86 @@ function setupPanel() {
 
   /* #endregion */
 
+  /* #region color picker */
+  var parent = document.querySelector('#color-picker');
+  var picker = new Picker(parent);
+
+  picker.onChange = function (color) {
+    parent.style.backgroundColor = color.rgbString;
+    config.themeColor = color.rgba;
+
+    refresh();
+  };
+  /* #endregion */
+
+  /* #region offset y */
+  const inputOffsetY = document.getElementById('input-background-offset-y');
+  const offsetYValue = document.getElementById('background-offset-y-value');
+
+  inputOffsetY.addEventListener('change', (event) => {
+    config.backgroundoffsety = Number(event.target.value);
+    offsetYValue.innerText = event.target.value;
+    refresh();
+  });
+  /* #endregion */
+
+  /* #region hr */
+  const spaceBeforeHr = document.getElementById('input-space-before-hr');
+  const spaceBeforeHrValue = document.getElementById('space-before-hr-value');
+
+  spaceBeforeHr.addEventListener('change', (event) => {
+    config.spaceBeforeHr = Number(event.target.value);
+    spaceBeforeHrValue.innerText = event.target.value;
+    refresh();
+  });
+
+  const spaceAfterHr = document.getElementById('input-space-after-hr');
+  const spaceAfterHrValue = document.getElementById('space-after-hr-value');
+
+  spaceAfterHr.addEventListener('change', (event) => {
+    config.spaceAfterHr = Number(event.target.value);
+    spaceAfterHrValue.innerText = event.target.value;
+    refresh();
+  });
+
+  const coloredHrLenght = document.getElementById('input-colored-hr-length');
+  const coloredHrLenghtValue = document.getElementById('colored-hr-length-value');
+
+  coloredHrLenght.addEventListener('change', (event) => {
+    config.coloredHrLenght = Number(event.target.value);
+    coloredHrLenghtValue.innerText = event.target.value;
+    refresh();
+  });
+
+  const coloredHrThickness = document.getElementById('input-colored-hr-thickness');
+  const coloredHrThicknessValue = document.getElementById('colored-hr-thickness-value');
+
+  coloredHrThickness.addEventListener('change', (event) => {
+    config.coloredHrThickness = Number(event.target.value);
+    coloredHrThicknessValue.innerText = event.target.value;
+    refresh();
+  });
+
+  const hrThickness = document.getElementById('input-hr-thickness');
+  const hrThicknessValue = document.getElementById('hr-thickness-value');
+
+  hrThickness.addEventListener('change', (event) => {
+    config.hrThickness = Number(event.target.value);
+    hrThicknessValue.innerText = event.target.value;
+    refresh();
+  });
+
+  /* #endregion */
+
+  /* #region bullet */
+  const bulletStyle = document.getElementById('bullet-style');
+
+  bulletStyle.addEventListener('change', (event) => {
+    config.bulletStyle = event.target.value;
+    refresh();
+  });
+  /* #endregion */
+
   // collapsible panel
   const btnTogglePanel = document.getElementById('btn-toggle-panel');
   btnTogglePanel.addEventListener('click', () => {
@@ -411,7 +500,7 @@ function setupPanel() {
     left.classList.toggle('hidden');
     right.classList.toggle('hidden');
   });
-  
+
   pGapValue.innerText = config.paragraphGap.h1;
   characterSpacingValue.innerText = config.characterSpacing;
   wordSpacingValue.innerText = config.wordSpacing;
@@ -441,6 +530,12 @@ function setupPanel() {
   pGapPValue.innerText = config.paragraphGap.p;
   pGapListValue.innerText = config.paragraphGap.list;
   pGapStrongValue.innerText = config.paragraphGap.strong;
+  offsetYValue.innerText = config.backgroundOffsetY;
+  spaceBeforeHrValue.innerText = config.spaceBeforeHr;
+  spaceAfterHrValue.innerText = config.spaceAfterHr;
+  coloredHrLenghtValue.innerText = config.coloredHrLenght;
+  coloredHrThicknessValue.innerText = config.coloredHrThickness;
+  hrThicknessValue.innerText = config.hrThickness;
 
   inputCharacterSpacing.value = config.characterSpacing;
   inputWordSpacing.value = config.wordSpacing;
@@ -471,6 +566,16 @@ function setupPanel() {
   inputPGapP.value = config.paragraphGap.p;
   inputPGapList.value = config.paragraphGap.list;
   inputPGapStrong.value = config.paragraphGap.strong;
+  picker.setColor(config.themeColor);
+  inputOffsetY.value = config.backgroundOffsetY;
+  spaceBeforeHr.value = config.spaceBeforeHr;
+  spaceAfterHr.value = config.spaceAfterHr;
+  coloredHrLenght.value = config.coloredHrLenght;
+  coloredHrThickness.value = config.coloredHrThickness;
+  hrThickness.value = config.hrThickness;
+  // bulletStyle is a select, set the option that matches the config as selected
+  bulletStyle.value = config.bulletStyle;
+
 }
 
 function parseMarkdown(markdown, config) {
@@ -567,7 +672,15 @@ function parseMarkdown(markdown, config) {
                 text: token.text,
                 font: config.fonts.italic
               })
-            } else {
+            } else if (token.type == 'codespan') {
+              line.text.push({
+                text: token.text,
+                font: config.fonts.regular,
+                code: true,
+              })
+
+            }
+            else {
               line.text.push({
                 text: token.raw,
                 font: config.fonts.regular
@@ -634,6 +747,10 @@ function parseMarkdown(markdown, config) {
         if (text == "<!-- pagebreak -->")
           lines.push({ type: "pagebreak" });
         break
+      case 'hr':
+        lines.push({ type: "hr" });
+        break;
+  
       default:
         break;
     }
@@ -659,26 +776,46 @@ function generatePdf(lines, config) {
     baseline: config.baseline,
   }
 
-
   for (const line of lines) {
     if (line.type == "pagebreak") {
       doc.addPage();
       continue;
+    } else if (line.type == "hr") {
+      console.log(config)
+
+      var rgba = config.themeColor
+      // convert rgb to hex and opacity to alpha
+      var hex = "#" + ((1 << 24) + (rgba[0] << 16) + (rgba[1] << 8) + rgba[2]).toString(16).slice(1);
+      var alpha = rgba[3];
+
+      var y = doc.y + config.spaceBeforeHr;
+      var x = doc.x;
+      console.log(hex, alpha)
+      doc.moveTo(x, y)
+        .lineWidth(config.coloredHrThickness)
+        .lineTo(x + config.coloredHrLenght, y).strokeColor(hex, alpha).stroke()
+      doc.moveTo(x + config.coloredHrLenght, y)
+        .lineWidth(config.hrThickness)
+        .lineTo(doc.page.width - doc.page.margins.left, y).strokeColor("black", 1).stroke();
+      doc.moveDown(config.spaceAfterHr);
     } else if (line.type.startsWith("h")) {
       var paragraphGap = config.paragraphGap[line.type];
       var lineGap = config.lineGap[line.type];
 
       for (const t of line.text) {
         // if token is not the last token of line.text
+        var localStyle = { ...style };
         if (line.text.indexOf(t) < line.text.length - 1) {
-          doc.font(t.font).fontSize(line.size).text(t.text, { ...style, continued: true, paragraphGap: paragraphGap, lineGap: lineGap });
+          localStyle = { ...style, continued: true, paragraphGap: paragraphGap, lineGap: lineGap };
         } else {
           if (line.trailing) {
-            doc.font(t.font).fontSize(line.size).text(t.text, { ...style, continued: true, paragraphGap: paragraphGap, lineGap: lineGap });
+            localStyle = { ...style, continued: true, paragraphGap: paragraphGap, lineGap: lineGap };
           } else {
-            doc.font(t.font).fontSize(line.size).text(t.text, { ...style, paragraphGap: paragraphGap, lineGap: lineGap });
+            localStyle = { ...style, paragraphGap: paragraphGap, lineGap: lineGap };
           }
         }
+
+        doc.font(t.font).fontSize(line.size).text(t.text, localStyle);
       }
     } else if (line.type == "p") {
       if (line.strong == true) {
@@ -688,22 +825,63 @@ function generatePdf(lines, config) {
         var paragraphGap = config.paragraphGap[line.type];
         var lineGap = config.lineGap[line.type];
       }
+
+      var cursor = 0;
+
       for (const t of line.text) {
-        // if token is not the first token of line.text
+        var localStyle = { ...style };
+
+        if (t.code == true) {
+          var x = cursor + doc.x;
+          var y = doc.y - config.backgroundoffsety;
+          var w = doc.widthOfString(t.text, { font: t.font, size: line.size });
+          var h = doc.currentLineHeight(true);
+
+          var rgba = config.themeColor
+          // convert rgb to hex and opacity to alpha
+          var hex = "#" + ((1 << 24) + (rgba[0] << 16) + (rgba[1] << 8) + rgba[2]).toString(16).slice(1);
+          var alpha = rgba[3];
+
+          doc.rect(x, y, w, h).opacity(alpha).fill(hex);
+          doc.fill("black").opacity(1);
+        }
+
         if (line.text.indexOf(t) < line.text.length - 1) {
-          doc.font(t.font).fontSize(line.size).text(t.text, { ...style, continued: true, paragraphGap: paragraphGap, lineGap: lineGap });
+          localStyle = { ...style, continued: true, paragraphGap: paragraphGap, lineGap: lineGap };
         } else {
           if (line.trailing) {
-            doc.font(t.font).fontSize(line.size).text(t.text, { ...style, continued: true, paragraphGap: paragraphGap, lineGap: lineGap });
+            localStyle = { ...style, continued: true, paragraphGap: paragraphGap, lineGap: lineGap };
           } else {
-            doc.font(t.font).fontSize(line.size).text(t.text, { ...style, paragraphGap: paragraphGap, lineGap: lineGap });
+            localStyle = { ...style, paragraphGap: paragraphGap, lineGap: lineGap };
           }
         }
+
+        // check if t.text matches a (?:__|[*#])|\[(.*?)\]\((.*?)\)
+        // if yes, then add a link
+        var link = t.text.match(/(?:__|[*#])|\[(.*?)\]\((.*?)\)/);
+        if (link) {
+          console.log(link)
+          if (link[1] && link[2]) {
+            doc.font(t.font).fontSize(line.size).text(link[1], {...localStyle, link: link[2]});
+          }
+        } else {
+          doc.font(t.font).fontSize(line.size).text(t.text, localStyle);
+        }
+
+        cursor += doc.widthOfString(t.text, { font: t.font, size: line.size });
       }
     } else if (line.type == "ul") {
       var paragraphGap = config.paragraphGap.list;
       var lineGap = config.lineGap.list;
       for (const item of line.items) {
+        // write bullet point
+        var rgba = config.themeColor
+        // convert rgb to hex and opacity to alpha
+        var hex = "#" + ((1 << 24) + (rgba[0] << 16) + (rgba[1] << 8) + rgba[2]).toString(16).slice(1);
+        var alpha = rgba[3];
+        doc.fillColor(hex).text(config.bulletStyle, { ...style, continued: true })
+        doc.fillColor("black").text(" ", { ...style, continued: true })
+
         for (const t of item.text) {
           if (item.text.indexOf(t) < item.text.length - 1) {
             doc.font(t.font).fontSize(item.size).text(t.text, { ...style, continued: true, paragraphGap: paragraphGap, lineGap: lineGap });
@@ -716,6 +894,14 @@ function generatePdf(lines, config) {
       var paragraphGap = config.paragraphGap.list;
       var lineGap = config.lineGap.list;
       for (const item of line.items) {
+        // write list index
+        var rgba = config.themeColor
+        // convert rgb to hex and opacity to alpha
+        var hex = "#" + ((1 << 24) + (rgba[0] << 16) + (rgba[1] << 8) + rgba[2]).toString(16).slice(1);
+        var alpha = rgba[3];
+        doc.fillColor(hex).text(item.index + ".", { ...style, continued: true })
+        doc.fillColor("black").text(" ", { ...style, continued: true })
+
         for (const t of item.text) {
           if (item.text.indexOf(t) < item.text.length - 1) {
             doc.font(t.font).fontSize(item.size).text(t.text, { ...style, continued: true, paragraphGap: paragraphGap, lineGap: lineGap });

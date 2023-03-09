@@ -72,7 +72,7 @@ module.exports = {
         new CopyPlugin({
             patterns: [
                 { from: "node_modules/easymde/dist/easymde.min.css", to: "easymde.min.css" },
-                { from: "node_modules/vanilla-picker/dist/vanilla-picker.csp", to: "vanilla-picker.csp.css" },
+                { from: "node_modules/vanilla-picker/dist/vanilla-picker.csp.css", to: "vanilla-picker.csp.css" },
             ],
         }),
     ]
